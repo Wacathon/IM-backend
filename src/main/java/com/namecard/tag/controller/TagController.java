@@ -18,13 +18,15 @@ public class TagController {
 
     private final TagService tagService;
 
-    @PostMapping("/")
-    public ApiResult<Boolean> addTag(@RequestBody NewTagRequest tagRequest) {
+    @PostMapping("")
+    public ApiResult<Boolean> addTag(
+            @RequestBody NewTagRequest tagRequest
+    ) {
         tagService.saveNewTag(tagRequest);
         return success();
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public ApiResult<List<TagResult>> loadAllTags() {
         return success(tagService.getAllTags());
     }

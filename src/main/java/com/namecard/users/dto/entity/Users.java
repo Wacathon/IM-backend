@@ -1,7 +1,7 @@
-package com.namecard.member.dto.entity;
+package com.namecard.users.dto.entity;
 
 import com.namecard.config.AuditBaseEntity;
-import com.namecard.member.dto.request.MyProfileRequest;
+import com.namecard.users.dto.request.MyProfileRequest;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
@@ -13,7 +13,7 @@ import static java.time.LocalDateTime.now;
 
 @Builder
 @Entity
-@Table(name="users")
+@Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

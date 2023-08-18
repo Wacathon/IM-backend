@@ -1,8 +1,8 @@
 package com.namecard.redis;
 
 import com.namecard.config.JwtConfig;
-import com.namecard.member.dto.entity.Users;
-import com.namecard.member.dto.result.LoginResult;
+import com.namecard.users.dto.entity.Users;
+import com.namecard.users.dto.result.LoginResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;

@@ -1,7 +1,7 @@
 package com.namecard.auth.controller;
 
 import com.namecard.auth.service.AuthService;
-import com.namecard.member.dto.result.LoginResult;
+import com.namecard.users.dto.result.LoginResult;
 import com.namecard.config.ApiResultUtil;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;

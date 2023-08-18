@@ -26,7 +26,9 @@ public class Answer extends AuditBaseEntity {
     @JoinColumn(name = "feedbackId")
     private Feedback feedback;
 
+    @Column(nullable = false)
     private String title;
+    @Column(nullable = false)
     private String content;
     private Boolean pinned;
 

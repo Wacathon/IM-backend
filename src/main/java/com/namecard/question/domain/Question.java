@@ -1,7 +1,7 @@
 package com.namecard.question.domain;
 
 import com.namecard.config.AuditBaseEntity;
-import com.namecard.member.dto.entity.Users;
+import com.namecard.users.dto.entity.Users;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;

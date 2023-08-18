@@ -3,7 +3,6 @@ package com.namecard.indicator.service;
 import com.namecard.exception.NotFoundException;
 import com.namecard.indicator.domain.IndicatorConnectRepository;
 import com.namecard.indicator.domain.IndicatorRepository;
-import com.namecard.indicator.dto.entity.Indicator;
 import com.namecard.indicator.dto.entity.IndicatorConnect;
 import com.namecard.indicator.dto.request.IndicatorRequest;
 import com.namecard.indicator.dto.request.IndicatorRequest.IndicatorTag;
@@ -11,8 +10,8 @@ import com.namecard.indicator.dto.result.IndicatorInfoResult;
 import com.namecard.indicator.dto.result.IndicatorInfoResult.IndicatorScoreResult;
 import com.namecard.indicator.dto.result.IndicatorListResult;
 import com.namecard.indicator.dto.result.MyIndicatorInfoResult;
-import com.namecard.member.domain.MemberRepository;
-import com.namecard.member.dto.entity.Users;
+import com.namecard.users.domain.UsersRepository;
+import com.namecard.users.dto.entity.Users;
 import com.namecard.tag.domain.TagRepository;
 import com.namecard.tag.dto.entity.Tag;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +28,7 @@ public class IndicatorService {
 
     private final IndicatorRepository indicatorRepository;
     private final IndicatorConnectRepository indicatorConnectRepository;
-    private final MemberRepository memberRepository;
+    private final UsersRepository memberRepository;
     private final TagRepository tagRepository;
 
     @Transactional(rollbackFor = Exception.class)

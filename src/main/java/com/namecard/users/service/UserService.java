@@ -1,14 +1,13 @@
-package com.namecard.member.service;
+package com.namecard.users.service;
 
-import com.namecard.config.JwtConfig;
-import com.namecard.member.dto.entity.Users;
-import com.namecard.member.dto.request.JoinRequest;
-import com.namecard.member.dto.request.LoginRequest;
-import com.namecard.member.dto.request.MyProfileRequest;
-import com.namecard.member.dto.request.PasswdResetRequest;
-import com.namecard.member.dto.result.LoginResult;
-import com.namecard.member.domain.MemberRepository;
-import com.namecard.member.dto.result.MyProfileResult;
+import com.namecard.users.dto.entity.Users;
+import com.namecard.users.dto.request.JoinRequest;
+import com.namecard.users.dto.request.LoginRequest;
+import com.namecard.users.dto.request.MyProfileRequest;
+import com.namecard.users.dto.request.PasswdResetRequest;
+import com.namecard.users.dto.result.LoginResult;
+import com.namecard.users.domain.UsersRepository;
+import com.namecard.users.dto.result.MyProfileResult;
 import com.namecard.redis.RedisService;
 import com.namecard.search.dto.result.SearchUsersResult;
 import lombok.RequiredArgsConstructor;
@@ -20,14 +19,10 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-public class MemberService {
+public class UserService {
 
-    private final JwtConfig jwtConfig;
-
-    private final MemberRepository memberRepository;
-
+    private final UsersRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
-
     private final RedisService redisService;
 
     @Transactional(rollbackFor = Exception.class)
@@ -41,8 +36,8 @@ public class MemberService {
                 .userName(joinRequest.getName())
                 .phoneNum(joinRequest.getPhoneNum())
                 .passwd(encodePasswd)
+                .introduce(joinRequest.getIntroduce())
                 .build();
-
 
         memberRepository.save(users);
         redisService.delete(joinRequest.getPhoneNum());
@@ -50,12 +45,12 @@ public class MemberService {
 
     private void validJoin(JoinRequest joinRequest) {
         List<Users> members = memberRepository.findByEmailOrPhoneNum(joinRequest.getEmail(), joinRequest.getPhoneNum());
-        for(Users usersEntity : members) {
-            if(usersEntity.getEmail().equals(joinRequest.getEmail())) {
+        for (Users usersEntity : members) {
+            if (usersEntity.getEmail().equals(joinRequest.getEmail())) {
                 throw new IllegalArgumentException("중복된 이메일이 있습니다.");
             }
 
-            if(usersEntity.getPhoneNum().equals(joinRequest.getPhoneNum())) {
+            if (usersEntity.getPhoneNum().equals(joinRequest.getPhoneNum())) {
                 throw new IllegalArgumentException("중복된 전화번호가 있습니다.");
             }
         }

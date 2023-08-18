@@ -1,15 +1,14 @@
-package com.namecard.member.controller;
+package com.namecard.users.controller;
 
 import com.namecard.config.ApiResultUtil.ApiResult;
 import com.namecard.exception.UnauthorizedException;
-import com.namecard.member.dto.request.JoinRequest;
-import com.namecard.member.dto.request.LoginRequest;
-import com.namecard.member.dto.request.MyProfileRequest;
-import com.namecard.member.dto.request.PasswdResetRequest;
-import com.namecard.member.dto.result.LoginResult;
-import com.namecard.member.dto.result.MyProfileResult;
-import com.namecard.member.service.MemberService;
-import com.namecard.config.ApiResultUtil;
+import com.namecard.users.dto.request.JoinRequest;
+import com.namecard.users.dto.request.LoginRequest;
+import com.namecard.users.dto.request.MyProfileRequest;
+import com.namecard.users.dto.request.PasswdResetRequest;
+import com.namecard.users.dto.result.LoginResult;
+import com.namecard.users.dto.result.MyProfileResult;
+import com.namecard.users.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
@@ -23,9 +22,9 @@ import static com.namecard.config.ApiResultUtil.success;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/member")
-public class MemberApiController {
+public class UsersApiController {
 
-    private final MemberService memberService;
+    private final UserService memberService;
 
     @ApiOperation(value = "회원가입")
     @PostMapping("/join")

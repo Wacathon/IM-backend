@@ -10,8 +10,8 @@ import com.namecard.feedback.dto.result.FeedbackResult;
 import com.namecard.feedback.repository.FeedbackRepository;
 import com.namecard.indicator.domain.IndicatorRepository;
 import com.namecard.indicator.dto.entity.Indicator;
-import com.namecard.member.domain.MemberRepository;
-import com.namecard.member.dto.entity.Users;
+import com.namecard.users.domain.UsersRepository;
+import com.namecard.users.dto.entity.Users;
 import com.namecard.question.domain.Question;
 import com.namecard.question.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,7 @@ public class FeedbackService {
     private final AnswerRepository answerRepository;
     private final IndicatorRepository indicatorRepository;
     private final QuestionRepository questionRepository;
-    private final MemberRepository memberRepository;
+    private final UsersRepository memberRepository;
 
     @Transactional
     public void createFeedback(Long userId, FeedbackRequest feedbackRequest) {

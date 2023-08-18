@@ -22,8 +22,10 @@ public class QuestionApiController {
     private final QuestionService questionService;
     private final JwtConfig jwtConfig;
 
-    @PostMapping("/")
-    public ApiResult<Boolean> createQuestion(@RequestBody QuestionRequest questionRequest, HttpServletRequest request) {
+    @PostMapping("")
+    public ApiResult<Boolean> createQuestion(
+            @RequestBody QuestionRequest questionRequest, HttpServletRequest request
+    ) {
         String accessToken = jwtConfig.extractAccessToken(request).orElseThrow(
                 () -> new UnauthorizedException("엑세스 토큰이 필요합니다.")
         );

@@ -2,8 +2,8 @@ package com.namecard.config;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.namecard.member.dto.entity.Users;
-import com.namecard.member.dto.entity.Role;
+import com.namecard.users.dto.entity.Users;
+import com.namecard.users.dto.entity.Role;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -68,7 +68,7 @@ public class JwtConfig {
     public Optional<String> extractMemberNo(String accessToken) {
         try {
             return Optional.ofNullable(JWT.require(Algorithm.HMAC512(secret)).build().verify(accessToken).getClaim(USERID_CLAIM).toString());
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             return Optional.empty();
         }
@@ -77,21 +77,22 @@ public class JwtConfig {
     public Optional<String> extractMemberRole(String accessToken) {
         try {
             return Optional.ofNullable(JWT.require(Algorithm.HMAC512(secret)).build().verify(accessToken).getClaim(USER_ROLE).asString());
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             return Optional.empty();
         }
     }
 
-    public boolean isTokenValid(String token){
+    public boolean isTokenValid(String token) {
         try {
             JWT.require(Algorithm.HMAC512(secret)).build().verify(token);
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error("유효하지 않은 Token입니다", e.getMessage());
             return false;
         }
     }
+
     public String getAccessHeader() {
         return this.accessHeader;
     }

@@ -2,8 +2,8 @@ package com.namecard.question.service;
 
 import com.namecard.exception.NotFoundException;
 import com.namecard.exception.QuestionLimitException;
-import com.namecard.member.domain.MemberRepository;
-import com.namecard.member.dto.entity.Users;
+import com.namecard.users.domain.UsersRepository;
+import com.namecard.users.dto.entity.Users;
 import com.namecard.question.domain.Question;
 import com.namecard.question.dto.request.QuestionRequest;
 import com.namecard.question.dto.result.QuestionResult;
@@ -20,7 +20,7 @@ import java.util.Optional;
 public class QuestionService {
 
     private final QuestionRepository questionRepository;
-    private final MemberRepository memberRepository;
+    private final UsersRepository memberRepository;
 
     @Transactional
     public void createQuestion(Long userId, QuestionRequest questionRequest) {
@@ -64,6 +64,7 @@ public class QuestionService {
         questionRepository.delete(question);
     }
 
+    @Transactional(readOnly = true)
     public List<QuestionResult> loadQuestions(Long userId) {
         Optional<Users> optionalUsers = memberRepository.findByUserId(userId);
         Users users = optionalUsers.orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
