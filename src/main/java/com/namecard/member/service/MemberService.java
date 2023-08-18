@@ -83,6 +83,7 @@ public class MemberService {
                 .email(users.getEmail())
                 .name(users.getUserName())
                 .phoneNum(users.getPhoneNum())
+                .introduce(users.getIntroduce())
                 .build();
     }
 
@@ -98,5 +99,11 @@ public class MemberService {
         Users usersEntity = memberRepository.findByEmail(request.getEmail()).orElseThrow(() -> new IllegalArgumentException("이메일 정보가 없습니다."));
 
         return usersEntity;
+    }
+
+    public void changeIntroduce(String introduce, long userId) {
+        Users entity = memberRepository.findByUserId(userId).orElseThrow(() -> new IllegalArgumentException("유저 정보가 없습니다."));
+        entity.updateIntroduce(introduce);
+        memberRepository.save(entity);
     }
 }

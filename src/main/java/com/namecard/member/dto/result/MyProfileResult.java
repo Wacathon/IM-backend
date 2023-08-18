@@ -20,4 +20,7 @@ public class MyProfileResult {
     @Schema(description = "사용자 전화번호")
     private String phoneNum;
 
+    @Schema(description = "자기소개")
+    private String introduce;
+
 }
