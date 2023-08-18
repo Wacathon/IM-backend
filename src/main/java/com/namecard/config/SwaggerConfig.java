@@ -96,6 +96,20 @@ public class SwaggerConfig {
                 .paths(PathSelectors.ant("/**"))
                 .build();
     }
+  
+    @Bean
+    public Docket feedbackApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("피드백")
+                .securityContexts(Arrays.asList(securityContext()))
+                .securitySchemes(Arrays.asList(accessToken(), refreshToken()))
+                .apiInfo(this.loginApiInfo())
+                .select()
+                .apis(RequestHandlerSelectors
+                        .basePackage("com.namecard.feedback"))
+                .paths(PathSelectors.ant("/**"))
+                .build();
+    }
 
     private SecurityContext securityContext() {
         return SecurityContext.builder()
