@@ -4,12 +4,11 @@ import com.namecard.config.ApiResultUtil.ApiResult;
 import com.namecard.config.JwtConfig;
 import com.namecard.exception.UnauthorizedException;
 import com.namecard.indicator.dto.request.IndicatorRequest;
+import com.namecard.indicator.dto.result.IndicatorInfoResult;
 import com.namecard.indicator.service.IndicatorService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -25,7 +24,7 @@ public class IndicatorController {
     private final IndicatorService indicatorService;
     private final JwtConfig jwtConfig;
 
-    @PostMapping("/")
+    @PostMapping("")
     public ApiResult<Boolean> saveIndicator(@RequestBody List<IndicatorRequest> indicatorList, HttpServletRequest request) {
         String accessToken = jwtConfig.extractAccessToken(request).orElseThrow(
                 () -> new UnauthorizedException("엑세스 토큰이 필요합니다.")
@@ -38,5 +37,13 @@ public class IndicatorController {
 
         indicatorService.indicatorSave(indicatorList, userId);
         return success();
+    }
+
+    @GetMapping("/{userId}")
+    public ApiResult<IndicatorInfoResult> getIndicatorInfo(
+            @PathVariable(value = "userId") long userId
+    ) {
+        IndicatorInfoResult result =  indicatorService.getIndicatorInfo(userId);
+        return success(result);
     }
 }
