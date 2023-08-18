@@ -3,11 +3,13 @@ package com.namecard.feedback.dto.request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 public class FeedbackRequest {
 
     @Schema(description = "피드백 대상자와의 관계", example = "SCHOOL_COLLEAGUE")
