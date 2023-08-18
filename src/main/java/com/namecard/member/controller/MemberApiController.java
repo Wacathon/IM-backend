@@ -1,8 +1,10 @@
 package com.namecard.member.controller;
 
+import com.namecard.config.ApiResultUtil.ApiResult;
 import com.namecard.exception.UnauthorizedException;
 import com.namecard.member.dto.request.JoinRequest;
 import com.namecard.member.dto.request.LoginRequest;
+import com.namecard.member.dto.request.MyProfileRequest;
 import com.namecard.member.dto.request.PasswdResetRequest;
 import com.namecard.member.dto.result.LoginResult;
 import com.namecard.member.dto.result.MyProfileResult;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import static com.namecard.config.ApiResultUtil.success;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/member")
@@ -25,30 +29,30 @@ public class MemberApiController {
 
     @ApiOperation(value = "회원가입")
     @PostMapping("/join")
-    public ApiResultUtil.ApiResult<Boolean> join(@Valid @RequestBody JoinRequest joinRequest) {
+    public ApiResult<Boolean> join(@Valid @RequestBody JoinRequest joinRequest) {
         memberService.join(joinRequest);
-        return ApiResultUtil.success();
+        return success();
     }
 
     @ApiOperation(value = "로그인")
     @PostMapping("/login")
-    public ApiResultUtil.ApiResult<LoginResult> login(@Valid @RequestBody LoginRequest loginRequest) {
+    public ApiResult<LoginResult> login(@Valid @RequestBody LoginRequest loginRequest) {
         LoginResult result = memberService.login(loginRequest);
 
-        return ApiResultUtil.success(result);
+        return success(result);
     }
 
 
     @ApiOperation(value = "비밀번호 재설정(전화번호 인증 필수)")
     @PutMapping("/passwdReset")
-    public ApiResultUtil.ApiResult<Boolean> passwdReset(@Valid @RequestBody PasswdResetRequest request) {
+    public ApiResult<Boolean> passwdReset(@Valid @RequestBody PasswdResetRequest request) {
         memberService.passwdReset(request);
-        return ApiResultUtil.success();
+        return success();
     }
 
     @ApiOperation(value = "내 프로필 조회(엑세스 토큰 필수)")
     @GetMapping("/myProfile")
-    public ApiResultUtil.ApiResult<MyProfileResult> myProfile(@ApiParam(hidden = true) @AuthenticationPrincipal String SMemberNo) {
+    public ApiResult<MyProfileResult> myProfile(@ApiParam(hidden = true) @AuthenticationPrincipal String SMemberNo) {
         long memberNo = 0;
         try {
             memberNo = Long.parseLong(SMemberNo);
@@ -57,6 +61,23 @@ public class MemberApiController {
         }
         MyProfileResult result = memberService.myProfile(memberNo);
 
-        return ApiResultUtil.success(result);
+        return success(result);
     }
+
+    @ApiOperation(value = "자기소개 수정")
+    @PostMapping("/introduce")
+    public ApiResult<Boolean> changeIntroduce(
+            @ApiParam(hidden = true) @AuthenticationPrincipal String SUserId,
+            @RequestBody MyProfileRequest profileRequest
+    ) {
+        long userId = 0;
+        try {
+            userId = Long.parseLong(SUserId);
+        } catch (Exception e) {
+            throw new UnauthorizedException("토큰이 필요합니다.");
+        }
+        memberService.changeMyProfile(profileRequest, userId);
+        return success();
+    }
+
 }

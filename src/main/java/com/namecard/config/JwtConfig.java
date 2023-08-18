@@ -92,7 +92,6 @@ public class JwtConfig {
             return false;
         }
     }
-
     public String getAccessHeader() {
         return this.accessHeader;
     }

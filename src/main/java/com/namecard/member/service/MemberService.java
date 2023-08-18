@@ -4,6 +4,7 @@ import com.namecard.config.JwtConfig;
 import com.namecard.member.dto.entity.Users;
 import com.namecard.member.dto.request.JoinRequest;
 import com.namecard.member.dto.request.LoginRequest;
+import com.namecard.member.dto.request.MyProfileRequest;
 import com.namecard.member.dto.request.PasswdResetRequest;
 import com.namecard.member.dto.result.LoginResult;
 import com.namecard.member.domain.MemberRepository;
@@ -83,6 +84,7 @@ public class MemberService {
                 .email(users.getEmail())
                 .name(users.getUserName())
                 .phoneNum(users.getPhoneNum())
+                .introduce(users.getIntroduce())
                 .build();
     }
 
@@ -98,5 +100,11 @@ public class MemberService {
         Users usersEntity = memberRepository.findByEmail(request.getEmail()).orElseThrow(() -> new IllegalArgumentException("이메일 정보가 없습니다."));
 
         return usersEntity;
+    }
+
+    public void changeMyProfile(MyProfileRequest profileRequest, long userId) {
+        Users entity = memberRepository.findByUserId(userId).orElseThrow(() -> new IllegalArgumentException("유저 정보가 없습니다."));
+        entity.updateUsers(profileRequest);
+        memberRepository.save(entity);
     }
 }
