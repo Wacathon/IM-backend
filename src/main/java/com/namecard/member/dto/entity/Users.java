@@ -1,5 +1,6 @@
 package com.namecard.member.dto.entity;
 
+import com.namecard.config.AuditBaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
@@ -15,7 +16,7 @@ import static java.time.LocalDateTime.now;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class Users {
+public class Users extends AuditBaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "members_seq")
@@ -39,9 +40,6 @@ public class Users {
 
     @Schema(description = "최종 로그인 일자")
     private LocalDateTime lastLoginDt;
-
-    @Schema(hidden = true)
-    private LocalDateTime createDt;
 
     public void afterLoginSuccess() {
         this.loginCount++;

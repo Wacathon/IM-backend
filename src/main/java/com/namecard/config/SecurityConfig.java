@@ -50,6 +50,7 @@ public class SecurityConfig {
                 , "/api/auth/refresh"
                 , "/api/auth/sendAuth"
                 , "/api/auth/validAuth"
+                , "/api/tag/**"
         );
     }
 

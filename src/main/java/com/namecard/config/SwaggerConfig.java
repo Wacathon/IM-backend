@@ -56,7 +56,7 @@ public class SwaggerConfig {
     }
 
     @Bean
-    public Docket memberApi() {
+    public Docket usersApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName("회원")
                 .securityContexts(Arrays.asList(securityContext()))
@@ -65,6 +65,20 @@ public class SwaggerConfig {
                 .select()
                 .apis(RequestHandlerSelectors
                         .basePackage("com.namecard.member"))
+                .paths(PathSelectors.ant("/**"))
+                .build();
+    }
+
+    @Bean
+    public Docket tagApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("태그")
+                .securityContexts(Arrays.asList(securityContext()))
+                .securitySchemes(Arrays.asList(accessToken(), refreshToken()))
+                .apiInfo(this.loginApiInfo())
+                .select()
+                .apis(RequestHandlerSelectors
+                        .basePackage("com.namecard.tag"))
                 .paths(PathSelectors.ant("/**"))
                 .build();
     }
