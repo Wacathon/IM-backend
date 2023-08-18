@@ -1,4 +1,4 @@
-package com.namecard.feedback.domian;
+package com.namecard.feedback.domain;
 
 import com.namecard.exception.NotFoundException;
 
