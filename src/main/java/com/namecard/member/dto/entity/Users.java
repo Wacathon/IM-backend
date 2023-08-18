@@ -1,6 +1,7 @@
 package com.namecard.member.dto.entity;
 
 import com.namecard.config.AuditBaseEntity;
+import com.namecard.member.dto.request.MyProfileRequest;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
@@ -44,8 +45,10 @@ public class Users extends AuditBaseEntity {
     @Schema(description = "간단한 소개")
     private String introduce;
 
-    public void updateIntroduce(String introduce) {
-        this.introduce = introduce;
+    public void updateUsers(MyProfileRequest request) {
+        this.phoneNum = request.getPhoneNum();
+        this.email = request.getEmail();
+        this.introduce = request.getIntroduce();
     }
 
     public void afterLoginSuccess() {

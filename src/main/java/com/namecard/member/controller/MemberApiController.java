@@ -4,6 +4,7 @@ import com.namecard.config.ApiResultUtil.ApiResult;
 import com.namecard.exception.UnauthorizedException;
 import com.namecard.member.dto.request.JoinRequest;
 import com.namecard.member.dto.request.LoginRequest;
+import com.namecard.member.dto.request.MyProfileRequest;
 import com.namecard.member.dto.request.PasswdResetRequest;
 import com.namecard.member.dto.result.LoginResult;
 import com.namecard.member.dto.result.MyProfileResult;
@@ -65,8 +66,9 @@ public class MemberApiController {
 
     @ApiOperation(value = "자기소개 수정")
     @PostMapping("/introduce")
-    public ApiResult<Boolean> changeIntroduce(@ApiParam(hidden = true) @AuthenticationPrincipal String SUserId,
-        @RequestBody String introduce
+    public ApiResult<Boolean> changeIntroduce(
+            @ApiParam(hidden = true) @AuthenticationPrincipal String SUserId,
+            @RequestBody MyProfileRequest profileRequest
     ) {
         long userId = 0;
         try {
@@ -74,7 +76,7 @@ public class MemberApiController {
         } catch (Exception e) {
             throw new UnauthorizedException("토큰이 필요합니다.");
         }
-        memberService.changeIntroduce(introduce, userId);
+        memberService.changeMyProfile(profileRequest, userId);
         return success();
     }
 
