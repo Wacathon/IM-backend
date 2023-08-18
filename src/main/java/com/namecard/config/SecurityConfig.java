@@ -53,6 +53,7 @@ public class SecurityConfig {
                 , "/api/tag/**"
                 , "/api/indicator"
                 , "/api/indicator/**"
+                , "/api/feedback"
         );
     }
 

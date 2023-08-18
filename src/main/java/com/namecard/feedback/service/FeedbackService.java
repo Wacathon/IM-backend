@@ -5,9 +5,7 @@ import com.namecard.answer.repository.AnswerRepository;
 import com.namecard.exception.NotFoundException;
 import com.namecard.feedback.domain.Feedback;
 import com.namecard.feedback.domain.Relationship;
-import com.namecard.feedback.dto.request.FeedbackAnswerRequest;
-import com.namecard.feedback.dto.request.FeedbackIndicatorRequest;
-import com.namecard.feedback.dto.request.FeedbackRequest;
+import com.namecard.feedback.dto.request.*;
 import com.namecard.feedback.dto.result.FeedbackResult;
 import com.namecard.feedback.repository.FeedbackRepository;
 import com.namecard.indicator.domain.IndicatorRepository;
@@ -85,15 +83,22 @@ public class FeedbackService {
     }
 
 
-    public List<FeedbackResult> getFeedbackList(Long userId) {
-        Optional<Users> optionalUsers = memberRepository.findByUserId(userId);
-        Users users = optionalUsers.orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
+    public List<FeedbackResult> getFeedbackList(FeedbackListRequest feedback) {
+        memberRepository.findByUserId(feedback.getUserId()).orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
 
-        List<Feedback> feedbacks = feedbackRepository.findAllByUsersEquals(users);
+        List<FeedbackResult> result;
 
-        return feedbacks.stream().map(f -> FeedbackResult.builder()
-                        .relationship(f.getRelationship().toString())
-                        .build())
-                .toList();
+        if(feedback.getPinned()) {
+            result = feedbackRepository.getFeedbackListLimit3(feedback);
+        } else {
+            result = feedbackRepository.getFeedbackList(feedback);
+        }
+        return result;
+    }
+
+    public void changePinned(FeedbackPinnedRequest pinnedRequest) {
+        Answer entity = answerRepository.findById(pinnedRequest.getAnswerId()).orElseThrow(() -> new NotFoundException("존재하지 않는 답변입니다."));
+        entity.changePinned(pinnedRequest.isPinned());
+        answerRepository.save(entity);
     }
 }

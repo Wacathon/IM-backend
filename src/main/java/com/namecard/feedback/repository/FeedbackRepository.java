@@ -8,7 +8,5 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import java.util.List;
 
 @EnableJpaRepositories
-public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
-
-    List<Feedback> findAllByUsersEquals(Users users);
+public interface FeedbackRepository extends JpaRepository<Feedback, Long>, FeedbackQuerydslRepository {
 }
