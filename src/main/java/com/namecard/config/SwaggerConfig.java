@@ -83,6 +83,20 @@ public class SwaggerConfig {
                 .build();
     }
 
+    @Bean
+    public Docket indicatorApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("평가 정보")
+                .securityContexts(Arrays.asList(securityContext()))
+                .securitySchemes(Arrays.asList(accessToken(), refreshToken()))
+                .apiInfo(this.loginApiInfo())
+                .select()
+                .apis(RequestHandlerSelectors
+                        .basePackage("com.namecard.indicator"))
+                .paths(PathSelectors.ant("/**"))
+                .build();
+    }
+
     private SecurityContext securityContext() {
         return SecurityContext.builder()
                 .securityReferences(accessTokenAuth())
