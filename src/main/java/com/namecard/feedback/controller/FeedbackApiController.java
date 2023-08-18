@@ -23,17 +23,11 @@ public class FeedbackApiController {
     private final FeedbackService feedbackService;
     private final JwtConfig jwtConfig;
 
-    @PostMapping("/")
-    public ApiResult<Boolean> createFeedback(@RequestBody FeedbackRequest feedbackRequest, HttpServletRequest request) {
-        String accessToken = jwtConfig.extractAccessToken(request).orElseThrow(
-                () -> new UnauthorizedException("엑세스 토큰이 필요합니다.")
-        );
-        Optional<String> SMemberNo = jwtConfig.extractMemberNo(accessToken);
-        long userId = 0;
-        if (SMemberNo.isPresent()) {
-            userId = Long.parseLong(SMemberNo.get());
-        }
-
+    @PostMapping("/{userId}")
+    public ApiResult<Boolean> createFeedback(
+            @PathVariable("userId") Long userId,
+            @RequestBody FeedbackRequest feedbackRequest
+    ) {
         feedbackService.createFeedback(userId, feedbackRequest);
         return success();
     }
