@@ -20,6 +20,6 @@ public class IndicatorInfoResult {
     @Builder
     public static class IndicatorScoreResult {
         private String tagName;
-        private int tagScore;
+        private double tagScore;
     }
 }

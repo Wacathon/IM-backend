@@ -51,8 +51,10 @@ public class IndicatorRepositoryImpl implements IndicatorQuerydslRepository {
                 .innerJoin(qTag)
                     .on(qIndicatorConnect.tagId.eq(qTag.tagId))
                 .leftJoin(qIndicator)
-                    .on(qIndicatorConnect.userId.eq(qIndicator.userId).and(qIndicatorConnect.tagId.eq(qTag.tagId)))
+                    .on(qIndicatorConnect.userId.eq(qIndicator.userId)
+                    .and(qTag.tagId.eq(qIndicator.tagId)))
                 .where(qIndicatorConnect.userId.eq(userId))
+                .groupBy(qIndicatorConnect.tagId, qTag.tagName)
                 .fetch();
     }
 }
