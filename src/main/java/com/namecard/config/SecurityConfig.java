@@ -54,6 +54,7 @@ public class SecurityConfig {
                 , "/api/indicator"
                 , "/api/indicator/**"
                 , "/api/feedback"
+                , "/api/search/**"
         );
     }
 

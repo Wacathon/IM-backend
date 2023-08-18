@@ -111,6 +111,20 @@ public class SwaggerConfig {
                 .build();
     }
 
+    @Bean
+    public Docket searchApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("검색")
+                .securityContexts(Arrays.asList(securityContext()))
+                .securitySchemes(Arrays.asList(accessToken(), refreshToken()))
+                .apiInfo(this.loginApiInfo())
+                .select()
+                .apis(RequestHandlerSelectors
+                        .basePackage("com.namecard.search"))
+                .paths(PathSelectors.ant("/**"))
+                .build();
+    }
+
     private SecurityContext securityContext() {
         return SecurityContext.builder()
                 .securityReferences(accessTokenAuth())
