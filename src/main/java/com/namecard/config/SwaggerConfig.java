@@ -96,6 +96,20 @@ public class SwaggerConfig {
                 .paths(PathSelectors.ant("/**"))
                 .build();
     }
+
+    @Bean
+    public Docket questionApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("사용자 설정 질문")
+                .securityContexts(Arrays.asList(securityContext()))
+                .securitySchemes(Arrays.asList(accessToken(), refreshToken()))
+                .apiInfo(this.loginApiInfo())
+                .select()
+                .apis(RequestHandlerSelectors
+                        .basePackage("com.namecard.question"))
+                .paths(PathSelectors.ant("/**"))
+                .build();
+    }
   
     @Bean
     public Docket feedbackApi() {
