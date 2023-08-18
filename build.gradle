@@ -28,7 +28,6 @@ dependencies {
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
     implementation 'io.springfox:springfox-swagger-ui:3.0.0'
     implementation 'com.fasterxml.jackson.core:jackson-core'
-    implementation 'com.fasterxml.jackson.core:jackson-core'
     implementation 'com.zaxxer:HikariCP'
     implementation 'com.h2database:h2'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
