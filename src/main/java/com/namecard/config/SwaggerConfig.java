@@ -64,7 +64,7 @@ public class SwaggerConfig {
                 .apiInfo(this.loginApiInfo())
                 .select()
                 .apis(RequestHandlerSelectors
-                        .basePackage("com.namecard.member"))
+                        .basePackage("com.namecard.users"))
                 .paths(PathSelectors.ant("/**"))
                 .build();
     }
