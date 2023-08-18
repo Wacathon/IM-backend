@@ -2,7 +2,9 @@ package com.namecard.indicator.domain.impl;
 
 import com.namecard.indicator.domain.IndicatorQuerydslRepository;
 import com.namecard.indicator.dto.entity.QIndicator;
+import com.namecard.indicator.dto.entity.QIndicatorConnect;
 import com.namecard.indicator.dto.result.IndicatorInfoResult.IndicatorScoreResult;
+import com.namecard.indicator.dto.result.MyIndicatorInfoResult;
 import com.namecard.tag.dto.entity.QTag;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -28,6 +30,24 @@ public class IndicatorRepositoryImpl implements IndicatorQuerydslRepository {
                 .from(qindicator)
                 .innerJoin(qTag).on(qindicator.tagId.eq(qTag.tagId))
                 .where(qindicator.userId.eq(userId), qindicator.feedbackId.eq(0L))
+                .fetch();
+    }
+
+    @Override
+    public List<MyIndicatorInfoResult> findIndicatorInfoByUserId(long userId) {
+        QIndicator qIndicator = QIndicator.indicator;
+        QIndicatorConnect qIndicatorConnect = QIndicatorConnect.indicatorConnect;
+        QTag qTag = QTag.tag;
+        return jpaQueryFactory.select(Projections.constructor(MyIndicatorInfoResult.class,
+                        qIndicatorConnect.tagId,
+                        qTag.tagName,
+                        qIndicator.tagScore.avg()))
+                .from(qIndicatorConnect)
+                .innerJoin(qTag)
+                    .on(qIndicatorConnect.tagId.eq(qTag.tagId))
+                .leftJoin(qIndicator)
+                    .on(qIndicatorConnect.userId.eq(qIndicator.userId).and(qIndicatorConnect.tagId.eq(qTag.tagId)))
+                .where(qIndicatorConnect.userId.eq(userId))
                 .fetch();
     }
 }

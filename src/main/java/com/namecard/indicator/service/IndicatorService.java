@@ -1,14 +1,19 @@
 package com.namecard.indicator.service;
 
+import com.namecard.indicator.domain.IndicatorConnectRepository;
 import com.namecard.indicator.domain.IndicatorRepository;
 import com.namecard.indicator.dto.entity.Indicator;
+import com.namecard.indicator.dto.entity.IndicatorConnect;
 import com.namecard.indicator.dto.request.IndicatorRequest;
+import com.namecard.indicator.dto.request.IndicatorRequest.IndicatorTag;
 import com.namecard.indicator.dto.result.IndicatorInfoResult;
 import com.namecard.indicator.dto.result.IndicatorInfoResult.IndicatorScoreResult;
+import com.namecard.indicator.dto.result.MyIndicatorInfoResult;
 import com.namecard.member.domain.MemberRepository;
 import com.namecard.member.dto.entity.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,16 +22,18 @@ import java.util.List;
 public class IndicatorService {
 
     private final IndicatorRepository indicatorRepository;
+    private final IndicatorConnectRepository indicatorConnectRepository;
     private final MemberRepository memberRepository;
 
-    public void indicatorSave(List<IndicatorRequest> list, long userId) {
-        for(IndicatorRequest request : list) {
-            Indicator entity = Indicator.builder()
+    @Transactional(rollbackFor = Exception.class)
+    public void indicatorSave(IndicatorRequest dto) {
+        long userId = dto.getUserId();
+        for(IndicatorTag tag : dto.getTagList()) {
+            IndicatorConnect entity = IndicatorConnect.builder()
                     .userId(userId)
-                    .tagId(request.getTagId())
-                    .tagScore(request.getTagScore())
+                    .tagId(tag.getTagId())
                     .build();
-            indicatorRepository.save(entity);
+            indicatorConnectRepository.save(entity);
         }
     }
 
@@ -51,5 +58,10 @@ public class IndicatorService {
 //                .friendsScoreList(friendsScoreList)
                 .build();
         return result;
+    }
+
+    @Transactional(readOnly = true)
+    public List<MyIndicatorInfoResult> getMyIndicatorInfo(long userId) {
+        return indicatorRepository.findIndicatorInfoByUserId(userId);
     }
 }
