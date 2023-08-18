@@ -38,4 +38,8 @@ public class Answer extends AuditBaseEntity {
         this.content = content;
         this.pinned = pinned;
     }
+
+    public void changePinned(Boolean pinned) {
+        this.pinned = pinned;
+    }
 }

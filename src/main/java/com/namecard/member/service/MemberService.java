@@ -10,6 +10,7 @@ import com.namecard.member.dto.result.LoginResult;
 import com.namecard.member.domain.MemberRepository;
 import com.namecard.member.dto.result.MyProfileResult;
 import com.namecard.redis.RedisService;
+import com.namecard.search.dto.result.SearchUsersResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -106,5 +107,9 @@ public class MemberService {
         Users entity = memberRepository.findByUserId(userId).orElseThrow(() -> new IllegalArgumentException("유저 정보가 없습니다."));
         entity.updateUsers(profileRequest);
         memberRepository.save(entity);
+    }
+
+    public List<SearchUsersResult> getSearchUsers(String userName) {
+        return memberRepository.findLikeUserName(userName);
     }
 }
