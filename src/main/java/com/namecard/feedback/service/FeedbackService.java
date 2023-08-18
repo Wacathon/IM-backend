@@ -84,7 +84,6 @@ public class FeedbackService {
         }
     }
 
-
     public List<FeedbackResult> getFeedbackList(Long userId) {
         Optional<Users> optionalUsers = memberRepository.findByUserId(userId);
         Users users = optionalUsers.orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
