@@ -28,6 +28,7 @@ public class IndicatorService {
     @Transactional(rollbackFor = Exception.class)
     public void indicatorSave(IndicatorRequest dto) {
         long userId = dto.getUserId();
+        indicatorConnectRepository.deleteByUserId(userId);
         for(IndicatorTag tag : dto.getTagList()) {
             IndicatorConnect entity = IndicatorConnect.builder()
                     .userId(userId)

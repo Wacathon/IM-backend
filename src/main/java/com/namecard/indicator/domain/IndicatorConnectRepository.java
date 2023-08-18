@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @EnableJpaRepositories
 public interface IndicatorConnectRepository extends JpaRepository<IndicatorConnect, Long> {
+    void deleteByUserId(long userId);
 }
