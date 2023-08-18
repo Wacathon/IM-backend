@@ -1,5 +1,9 @@
 package com.namecard.feedback.controller;
 
+import com.namecard.config.JwtConfig;
+import com.namecard.exception.UnauthorizedException;
+import com.namecard.feedback.dto.request.FeedbackListRequest;
+import com.namecard.feedback.dto.request.FeedbackPinnedRequest;
 import com.namecard.feedback.dto.request.FeedbackRequest;
 import com.namecard.feedback.dto.result.FeedbackResult;
 import com.namecard.feedback.service.FeedbackService;
@@ -26,8 +30,18 @@ public class FeedbackApiController {
         return success();
     }
 
-    @GetMapping("/{userId}")
-    public ApiResult<List<FeedbackResult>> loadUsersFeedbacks(@PathVariable("userId") Long userId) {
-        return success(feedbackService.getFeedbackList(userId));
+    @GetMapping("")
+    public ApiResult<List<FeedbackResult>> loadUsersFeedbacks(
+            FeedbackListRequest feedback
+    ) {
+        return success(feedbackService.getFeedbackList(feedback));
+    }
+
+    @PostMapping("/pinned")
+    public ApiResult<Boolean> changePinned(
+            @RequestBody FeedbackPinnedRequest pinnedRequest
+    ) {
+        feedbackService.changePinned(pinnedRequest);
+        return success();
     }
 }

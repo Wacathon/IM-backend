@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @EnableJpaRepositories
-public interface MemberRepository extends JpaRepository<Users, Long> {
+public interface MemberRepository extends JpaRepository<Users, Long>, MemberQuerydslRepository {
 
     Optional<Users> findByEmail(String email);
 
