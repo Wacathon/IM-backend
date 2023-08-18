@@ -41,6 +41,13 @@ public class Users extends AuditBaseEntity {
     @Schema(description = "최종 로그인 일자")
     private LocalDateTime lastLoginDt;
 
+    @Schema(description = "간단한 소개")
+    private String introduce;
+
+    public void updateIntroduce(String introduce) {
+        this.introduce = introduce;
+    }
+
     public void afterLoginSuccess() {
         this.loginCount++;
         this.lastLoginDt = now();

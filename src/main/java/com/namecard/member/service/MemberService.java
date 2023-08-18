@@ -92,16 +92,10 @@ public class MemberService {
         String encodePasswd = passwordEncoder.encode(request.getNewPasswd());
         usersEntity.updatePassword(encodePasswd);
         memberRepository.save(usersEntity);
-        redisService.delete(request.getPhoneNum());
     }
 
     private Users validPasswdReset(PasswdResetRequest request) {
         Users usersEntity = memberRepository.findByEmail(request.getEmail()).orElseThrow(() -> new IllegalArgumentException("이메일 정보가 없습니다."));
-
-        String checkPhoneAuth = redisService.findPhoneAuthSuccess(request.getPhoneNum());
-        if(checkPhoneAuth == null || !checkPhoneAuth.equals("Y")) {
-            throw new IllegalArgumentException("전화번호 인증이 필요합니다.");
-        }
 
         return usersEntity;
     }

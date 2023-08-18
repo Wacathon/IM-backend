@@ -84,6 +84,20 @@ public class SwaggerConfig {
     }
 
     @Bean
+    public Docket indicatorApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("평가 정보")
+                .securityContexts(Arrays.asList(securityContext()))
+                .securitySchemes(Arrays.asList(accessToken(), refreshToken()))
+                .apiInfo(this.loginApiInfo())
+                .select()
+                .apis(RequestHandlerSelectors
+                        .basePackage("com.namecard.indicator"))
+                .paths(PathSelectors.ant("/**"))
+                .build();
+    }
+  
+    @Bean
     public Docket feedbackApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName("피드백")
