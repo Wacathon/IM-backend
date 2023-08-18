@@ -67,6 +67,7 @@ public class IndicatorController {
         return success();
     }
 
+    @ApiOperation(value="유저 명함 정보 조회")
     @GetMapping("/{userId}")
     public ApiResult<IndicatorInfoResult> getIndicatorInfo(
             @PathVariable(value = "userId") long userId

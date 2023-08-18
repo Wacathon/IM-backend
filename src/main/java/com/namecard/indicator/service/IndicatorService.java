@@ -38,31 +38,26 @@ public class IndicatorService {
         }
     }
 
+    @Transactional(readOnly = true)
+    public List<MyIndicatorInfoResult> getMyIndicatorInfo(long userId) {
+        return indicatorRepository.findIndicatorInfoByUserId(userId);
+    }
+
+
+    @Transactional(readOnly = true)
     public IndicatorInfoResult getIndicatorInfo(long userId) {
         Users users = memberRepository.findByUserId(userId).orElseThrow(
                 () -> new IllegalArgumentException("회원정보가 없습니다.")
         );
-
-        List<IndicatorScoreResult> myScorelist = indicatorRepository.findIndicatorScoreByUserId(userId);
-        /**
-         * TODO
-         * FEEDBACK 추가 이후 피드백 데이터 추가 필요
-         * */
-//        List<IndicatorScoreResult> friendsScoreList = indicatorRepository.findIndicatorScoreByUserId(userId);
+        List<IndicatorScoreResult> scoreList = indicatorRepository.findIndicatorScoreByUserId(userId);
 
         IndicatorInfoResult result = IndicatorInfoResult.builder()
                 .email(users.getEmail())
                 .userName(users.getUserName())
                 .phoneNum(users.getPhoneNum())
                 .introduce(users.getIntroduce())
-                .myScoreList(myScorelist)
-//                .friendsScoreList(friendsScoreList)
+                .scoreList(scoreList)
                 .build();
         return result;
-    }
-
-    @Transactional(readOnly = true)
-    public List<MyIndicatorInfoResult> getMyIndicatorInfo(long userId) {
-        return indicatorRepository.findIndicatorInfoByUserId(userId);
     }
 }

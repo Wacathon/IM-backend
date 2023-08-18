@@ -23,13 +23,18 @@ public class IndicatorRepositoryImpl implements IndicatorQuerydslRepository {
     public List<IndicatorScoreResult> findIndicatorScoreByUserId(long userId) {
         QIndicator qindicator = QIndicator.indicator;
         QTag qTag = QTag.tag;
+        QIndicatorConnect qIndicatorConnect = QIndicatorConnect.indicatorConnect;
         return jpaQueryFactory.select(Projections.constructor(IndicatorScoreResult.class,
-                        qindicator.indicatorId,
                         qTag.tagName,
-                        qindicator.tagScore))
-                .from(qindicator)
-                .innerJoin(qTag).on(qindicator.tagId.eq(qTag.tagId))
-                .where(qindicator.userId.eq(userId), qindicator.feedbackId.eq(0L))
+                        qindicator.tagScore.avg()))
+                .from(qIndicatorConnect)
+                .innerJoin(qTag)
+                    .on(qIndicatorConnect.tagId.eq(qTag.tagId))
+                .leftJoin(qindicator)
+                    .on(qIndicatorConnect.tagId.eq(qindicator.tagId)
+                    .and(qIndicatorConnect.userId.eq(qindicator.userId)))
+                .where(qIndicatorConnect.userId.eq(userId))
+                .groupBy(qTag.tagName)
                 .fetch();
     }
 

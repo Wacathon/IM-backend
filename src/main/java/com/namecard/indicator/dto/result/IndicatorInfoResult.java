@@ -13,14 +13,12 @@ public class IndicatorInfoResult {
     private String introduce;
     private String email;
     private String phoneNum;
-    private List<IndicatorScoreResult> myScoreList;
-    private List<IndicatorScoreResult> friendsScoreList;
+    private List<IndicatorScoreResult> scoreList;
 
     @Data
     @AllArgsConstructor
     @Builder
     public static class IndicatorScoreResult {
-        private long indicatorId;
         private String tagName;
         private int tagScore;
     }
