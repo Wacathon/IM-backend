@@ -2,12 +2,12 @@ package com.namecard.tag.controller;
 
 import com.namecard.config.ApiResultUtil.ApiResult;
 import com.namecard.tag.dto.request.NewTagRequest;
+import com.namecard.tag.dto.result.TagResult;
 import com.namecard.tag.service.TagService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static com.namecard.config.ApiResultUtil.success;
 
@@ -22,5 +22,10 @@ public class TagController {
     public ApiResult<Boolean> addTag(@RequestBody NewTagRequest tagRequest) {
         tagService.saveNewTag(tagRequest);
         return success();
+    }
+
+    @GetMapping("/")
+    public ApiResult<List<TagResult>> loadAllTags() {
+        return success(tagService.getAllTags());
     }
 }

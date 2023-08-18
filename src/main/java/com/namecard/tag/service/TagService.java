@@ -4,9 +4,12 @@ import com.namecard.exception.DuplicateTagNameException;
 import com.namecard.tag.domain.TagRepository;
 import com.namecard.tag.dto.entity.Tag;
 import com.namecard.tag.dto.request.NewTagRequest;
+import com.namecard.tag.dto.result.TagResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -26,5 +29,12 @@ public class TagService {
 
         Tag tag = Tag.builder().tagName(tagRemovedSpace).build();
         tagRepository.save(tag);
+    }
+
+    public List<TagResult> getAllTags() {
+        return tagRepository.findAll().stream().map(t -> TagResult.builder()
+                .tagId(t.getTagId())
+                .tagName(t.getTagName())
+                .build()).toList();
     }
 }
