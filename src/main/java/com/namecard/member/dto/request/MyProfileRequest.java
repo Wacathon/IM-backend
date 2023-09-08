@@ -1,4 +1,4 @@
-package com.namecard.users.dto.request;
+package com.namecard.member.dto.request;
 
 import lombok.Data;
 

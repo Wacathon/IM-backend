@@ -1,4 +1,4 @@
-package com.namecard.users.dto.entity;
+package com.namecard.member.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
