@@ -1,8 +1,8 @@
 package com.namecard.tag.service;
 
 import com.namecard.exception.DuplicateTagNameException;
-import com.namecard.tag.domain.TagRepository;
-import com.namecard.tag.dto.entity.Tag;
+import com.namecard.tag.repository.TagRepository;
+import com.namecard.tag.domain.Tag;
 import com.namecard.tag.dto.request.NewTagRequest;
 import com.namecard.tag.dto.result.TagResult;
 import lombok.RequiredArgsConstructor;

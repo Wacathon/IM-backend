@@ -1,8 +1,8 @@
 package com.namecard.redis;
 
-import com.namecard.config.JwtConfig;
-import com.namecard.users.dto.entity.Users;
-import com.namecard.users.dto.result.LoginResult;
+import com.namecard.config.jwt.JwtConfig;
+import com.namecard.member.domain.Member;
+import com.namecard.member.dto.result.LoginResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -22,20 +22,21 @@ public class RedisService {
     @Value("${jwt.refresh.expiration}")
     private long refreshTokenValidityInSeconds;
 
-    private long phoneAuthValidityInSeconds = 180000;
+    private final long phoneAuthValidityInSeconds = 180000;
 
-    private long phoneAuthSuccessValidityInSeconds = 86400000; //1일
+    private final long phoneAuthSuccessValidityInSeconds = 86400000; //1일
 
     public void saveRefreshToken(long memberNo, String refreshToken) {
         redisTemplate.opsForValue()
-            .set(String.valueOf(memberNo),
-                    refreshToken,
-                    refreshTokenValidityInSeconds,
-                    TimeUnit.MILLISECONDS);
+                .set(String.valueOf(memberNo),
+                        refreshToken,
+                        refreshTokenValidityInSeconds,
+                        TimeUnit.MILLISECONDS);
     }
 
     public String findRefreshToken(long memberNo) {
-        return redisTemplate.opsForValue().get(String.valueOf(memberNo));
+        return redisTemplate.opsForValue()
+                .get(String.valueOf(memberNo));
     }
 
     public void delete(String key) {
@@ -51,7 +52,8 @@ public class RedisService {
     }
 
     public String findPhoneAuthCode(String phoneNum) {
-        return redisTemplate.opsForValue().get(String.valueOf(phoneNum));
+        return redisTemplate.opsForValue()
+                .get(String.valueOf(phoneNum));
     }
 
     public void savePhoneAuthSuccess(String phoneNum) {
@@ -63,16 +65,20 @@ public class RedisService {
     }
 
     public String findPhoneAuthSuccess(String phoneNum) {
-        return redisTemplate.opsForValue().get(String.valueOf(phoneNum));
+        return redisTemplate.opsForValue()
+                .get(String.valueOf(phoneNum));
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public LoginResult tokenCreate(Users users) {
-        String accessToken = jwtConfig.createAccessToken(users);
+    public LoginResult createNewTokens(Member member) {
+        String accessToken = jwtConfig.createAccessToken(member);
         String refreshToken = jwtConfig.createRefreshToken();
 
-        this.saveRefreshToken(users.getUserId(), refreshToken);
-        return LoginResult.builder().accessToken(accessToken).refreshToken(refreshToken).build();
+        this.saveRefreshToken(member.getMemberId(), refreshToken); // 레디스에 리프레시 토큰 저장
+        return LoginResult.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
     }
 
 }

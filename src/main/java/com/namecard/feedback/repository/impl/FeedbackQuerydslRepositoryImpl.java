@@ -31,7 +31,7 @@ public class FeedbackQuerydslRepositoryImpl implements FeedbackQuerydslRepositor
                 .from(qAnswer)
                 .innerJoin(qQuestion)
                     .on(qAnswer.question.questionId.eq(qQuestion.questionId))
-                .where(qQuestion.users.userId.eq(feedbackListRequest.getUserId()))
+                .where(qQuestion.member.memberId.eq(feedbackListRequest.getUserId()))
                 .fetch();
     }
 
@@ -49,7 +49,7 @@ public class FeedbackQuerydslRepositoryImpl implements FeedbackQuerydslRepositor
                 .from(qAnswer)
                 .innerJoin(qQuestion)
                 .on(qAnswer.question.questionId.eq(qQuestion.questionId))
-                .where(qQuestion.users.userId.eq(feedbackListRequest.getUserId()))
+                .where(qQuestion.member.memberId.eq(feedbackListRequest.getUserId()))
                 .limit(3)
                 .fetch();
     }

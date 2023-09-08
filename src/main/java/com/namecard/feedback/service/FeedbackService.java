@@ -8,10 +8,10 @@ import com.namecard.feedback.domain.Relationship;
 import com.namecard.feedback.dto.request.*;
 import com.namecard.feedback.dto.result.FeedbackResult;
 import com.namecard.feedback.repository.FeedbackRepository;
-import com.namecard.indicator.domain.IndicatorRepository;
-import com.namecard.indicator.dto.entity.Indicator;
-import com.namecard.users.domain.UsersRepository;
-import com.namecard.users.dto.entity.Users;
+import com.namecard.indicator.repository.IndicatorRepository;
+import com.namecard.indicator.domain.Indicator;
+import com.namecard.member.repository.MemberRepository;
+import com.namecard.member.domain.Member;
 import com.namecard.question.domain.Question;
 import com.namecard.question.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,22 +28,22 @@ public class FeedbackService {
     private final AnswerRepository answerRepository;
     private final IndicatorRepository indicatorRepository;
     private final QuestionRepository questionRepository;
-    private final UsersRepository memberRepository;
+    private final MemberRepository memberRepository;
 
     @Transactional
-    public void createFeedback(Long userId, FeedbackRequest feedbackRequest) {
+    public void createFeedback(Long memberId, FeedbackRequest feedbackRequest) {
         if (feedbackRequest == null) {
             throw new IllegalArgumentException("입력 값이 존재하지 않습니다.");
         }
 
-        Optional<Users> optionalUsers = memberRepository.findByUserId(userId);
-        Users users = optionalUsers.orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
+        Optional<Member> optionalUsers = memberRepository.findByMemberId(memberId);
+        Member member = optionalUsers.orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
 
         /*
             피드백 데이터 생성
          */
         Feedback feedback = Feedback.builder()
-                .users(users)
+                .member(member)
                 .relationship(Relationship.findRelationshipByString(feedbackRequest.getRelationship()))
                 .build();
 
@@ -76,7 +76,7 @@ public class FeedbackService {
                     .feedbackId(savedFeedback.getFeedbackId())
                     .tagId(fir.getTagId())
                     .tagScore(fir.getTagScore())
-                    .userId(userId)
+                    .memberId(memberId)
                     .build();
             indicatorRepository.save(indicator);
         }
@@ -84,7 +84,7 @@ public class FeedbackService {
 
 
     public List<FeedbackResult> getFeedbackList(FeedbackListRequest feedback) {
-        memberRepository.findByUserId(feedback.getUserId()).orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
+        memberRepository.findByMemberId(feedback.getUserId()).orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
 
         List<FeedbackResult> result;
 

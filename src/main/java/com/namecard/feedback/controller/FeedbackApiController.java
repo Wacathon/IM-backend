@@ -1,7 +1,5 @@
 package com.namecard.feedback.controller;
 
-import com.namecard.config.JwtConfig;
-import com.namecard.exception.UnauthorizedException;
 import com.namecard.feedback.dto.request.FeedbackListRequest;
 import com.namecard.feedback.dto.request.FeedbackPinnedRequest;
 import com.namecard.feedback.dto.request.FeedbackRequest;
@@ -21,12 +19,12 @@ public class FeedbackApiController {
 
     private final FeedbackService feedbackService;
 
-    @PostMapping("/{userId}")
+    @PostMapping("/{memberId}")
     public ApiResult<Boolean> createFeedback(
-            @PathVariable("userId") Long userId,
+            @PathVariable("memberId") Long memberId,
             @RequestBody FeedbackRequest feedbackRequest
     ) {
-        feedbackService.createFeedback(userId, feedbackRequest);
+        feedbackService.createFeedback(memberId, feedbackRequest);
         return success();
     }
 

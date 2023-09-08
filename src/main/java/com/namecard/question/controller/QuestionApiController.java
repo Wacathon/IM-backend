@@ -1,6 +1,6 @@
 package com.namecard.question.controller;
 
-import com.namecard.config.JwtConfig;
+import com.namecard.config.jwt.JwtConfig;
 import com.namecard.exception.UnauthorizedException;
 import com.namecard.question.dto.request.QuestionRequest;
 import com.namecard.question.dto.result.QuestionResult;
