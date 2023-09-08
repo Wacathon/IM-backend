@@ -1,4 +1,4 @@
-package com.namecard.config;
+package com.namecard.config.swagger;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -64,7 +64,7 @@ public class SwaggerConfig {
                 .apiInfo(this.loginApiInfo())
                 .select()
                 .apis(RequestHandlerSelectors
-                        .basePackage("com.namecard.users"))
+                        .basePackage("com.namecard.member"))
                 .paths(PathSelectors.ant("/**"))
                 .build();
     }
@@ -110,7 +110,7 @@ public class SwaggerConfig {
                 .paths(PathSelectors.ant("/**"))
                 .build();
     }
-  
+
     @Bean
     public Docket feedbackApi() {
         return new Docket(DocumentationType.SWAGGER_2)

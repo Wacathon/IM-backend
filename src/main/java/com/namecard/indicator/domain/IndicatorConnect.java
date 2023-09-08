@@ -1,4 +1,4 @@
-package com.namecard.tag.dto.entity;
+package com.namecard.indicator.domain;
 
 import com.namecard.config.AuditBaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -17,13 +17,15 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class Tag extends AuditBaseEntity {
+public class IndicatorConnect extends AuditBaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "tag_seq")
-    @Schema(description = "Tag Id(PK)")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "indicator_connect_seq")
+    @Schema(description = "Indicator Connect Id(PK)")
+    private long indicatorConnectId;
+
     private long tagId;
 
-    @Schema(description = "태그 명")
-    private String tagName;
+    private long memberId;
+
 }

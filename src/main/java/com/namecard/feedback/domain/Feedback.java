@@ -1,7 +1,7 @@
 package com.namecard.feedback.domain;
 
 import com.namecard.config.AuditBaseEntity;
-import com.namecard.users.dto.entity.Users;
+import com.namecard.member.domain.Member;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,17 +20,17 @@ public class Feedback extends AuditBaseEntity {
     private Long feedbackId;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "memberId")
     @Schema(description = "피드백 대상 유저")
-    private Users users;
+    private Member member;
 
     @Enumerated(EnumType.STRING)
     @Schema(description = "피드백 대상자와의 관계")
     private Relationship relationship;
 
     @Builder
-    public Feedback(Users users, Relationship relationship) {
-        this.users = users;
+    public Feedback(Member member, Relationship relationship) {
+        this.member = member;
         this.relationship = relationship;
     }
 }

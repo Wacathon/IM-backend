@@ -1,4 +1,4 @@
-package com.namecard.config;
+package com.namecard.config.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;

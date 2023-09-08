@@ -1,4 +1,4 @@
-package com.namecard.indicator.dto.entity;
+package com.namecard.indicator.domain;
 
 import com.namecard.config.AuditBaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -34,5 +34,5 @@ public class Indicator extends AuditBaseEntity {
     private long feedbackId;
 
     @Schema(description = "유저 ID(FK)")
-    private long userId;
+    private long memberId;
 }

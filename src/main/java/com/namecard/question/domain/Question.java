@@ -1,7 +1,7 @@
 package com.namecard.question.domain;
 
 import com.namecard.config.AuditBaseEntity;
-import com.namecard.users.dto.entity.Users;
+import com.namecard.member.domain.Member;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,16 +20,16 @@ public class Question extends AuditBaseEntity {
     private Long questionId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "memberId")
     @Schema(description = "사용자 설정 질문을 만들 유저")
-    private Users users;
+    private Member member;
 
     @Schema(description = "사용자 설정 질문 내용")
     private String title;
 
     @Builder
-    public Question(Users users, String title) {
-        this.users = users;
+    public Question(Member member, String title) {
+        this.member = member;
         this.title = title;
     }
 

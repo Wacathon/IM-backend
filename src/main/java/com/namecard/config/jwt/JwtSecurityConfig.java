@@ -1,4 +1,4 @@
-package com.namecard.config;
+package com.namecard.config.jwt;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;

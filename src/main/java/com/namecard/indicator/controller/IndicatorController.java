@@ -1,7 +1,7 @@
 package com.namecard.indicator.controller;
 
 import com.namecard.config.ApiResultUtil.ApiResult;
-import com.namecard.config.JwtConfig;
+import com.namecard.config.jwt.JwtConfig;
 import com.namecard.exception.UnauthorizedException;
 import com.namecard.indicator.dto.request.IndicatorRequest;
 import com.namecard.indicator.dto.result.IndicatorInfoResult;

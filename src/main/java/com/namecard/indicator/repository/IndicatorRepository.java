@@ -1,6 +1,6 @@
-package com.namecard.indicator.domain;
+package com.namecard.indicator.repository;
 
-import com.namecard.indicator.dto.entity.Indicator;
+import com.namecard.indicator.domain.Indicator;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 

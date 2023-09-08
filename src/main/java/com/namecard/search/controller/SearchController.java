@@ -1,7 +1,7 @@
 package com.namecard.search.controller;
 
 import com.namecard.config.ApiResultUtil.ApiResult;
-import com.namecard.users.service.UserService;
+import com.namecard.member.service.MemberService;
 import com.namecard.search.dto.result.SearchUsersResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +17,7 @@ import static com.namecard.config.ApiResultUtil.success;
 @RequiredArgsConstructor
 public class SearchController {
 
-    private final UserService memberService;
+    private final MemberService memberService;
 
     @GetMapping("/users")
     public ApiResult<List<SearchUsersResult>> userSearch(String userName) {

@@ -2,8 +2,8 @@ package com.namecard.question.service;
 
 import com.namecard.exception.NotFoundException;
 import com.namecard.exception.QuestionLimitException;
-import com.namecard.users.domain.UsersRepository;
-import com.namecard.users.dto.entity.Users;
+import com.namecard.member.repository.MemberRepository;
+import com.namecard.member.domain.Member;
 import com.namecard.question.domain.Question;
 import com.namecard.question.dto.request.QuestionRequest;
 import com.namecard.question.dto.result.QuestionResult;
@@ -20,19 +20,19 @@ import java.util.Optional;
 public class QuestionService {
 
     private final QuestionRepository questionRepository;
-    private final UsersRepository memberRepository;
+    private final MemberRepository memberRepository;
 
     @Transactional
     public void createQuestion(Long userId, QuestionRequest questionRequest) {
-        Optional<Users> optionalUsers = memberRepository.findByUserId(userId);
-        Users users = optionalUsers.orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
+        Optional<Member> optionalUsers = memberRepository.findByMemberId(userId);
+        Member member = optionalUsers.orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
 
-        if (questionRepository.countQuestionsByUsers(users) > 3) {
+        if (questionRepository.countQuestionsByMember(member) > 3) {
             throw new QuestionLimitException("사용자 설정 질문의 최대 생성 개수는 3개입니다.");
         }
 
         Question question = Question.builder()
-                .users(users)
+                .member(member)
                 .title(questionRequest.getTitle())
                 .build();
 
@@ -40,8 +40,8 @@ public class QuestionService {
     }
 
     @Transactional
-    public void modifyQuestion(Long userId, Long questionId, QuestionRequest questionRequest) {
-        Optional<Users> optionalUsers = memberRepository.findByUserId(userId);
+    public void modifyQuestion(Long memberId, Long questionId, QuestionRequest questionRequest) {
+        Optional<Member> optionalUsers = memberRepository.findByMemberId(memberId);
         if (optionalUsers.isEmpty()) {
             throw new NotFoundException("존재하지 않는 유저입니다.");
         }
@@ -54,7 +54,7 @@ public class QuestionService {
 
     @Transactional
     public void deleteQuestion(Long userId, Long questionId) {
-        Optional<Users> optionalUsers = memberRepository.findByUserId(userId);
+        Optional<Member> optionalUsers = memberRepository.findByMemberId(userId);
         if (optionalUsers.isEmpty()) {
             throw new NotFoundException("존재하지 않는 유저입니다.");
         }
@@ -66,10 +66,10 @@ public class QuestionService {
 
     @Transactional(readOnly = true)
     public List<QuestionResult> loadQuestions(Long userId) {
-        Optional<Users> optionalUsers = memberRepository.findByUserId(userId);
-        Users users = optionalUsers.orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
+        Optional<Member> optionalUsers = memberRepository.findByMemberId(userId);
+        Member member = optionalUsers.orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
 
-        List<Question> questions = questionRepository.findQuestionsByUsers(users);
+        List<Question> questions = questionRepository.findQuestionsByMember(member);
 
         return questions.stream().map(q -> QuestionResult.builder()
                 .questionId(q.getQuestionId())

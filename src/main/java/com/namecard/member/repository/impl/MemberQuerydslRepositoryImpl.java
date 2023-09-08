@@ -1,7 +1,7 @@
-package com.namecard.users.domain.impl;
+package com.namecard.member.repository.impl;
 
-import com.namecard.users.domain.UsersQuerydslRepository;
-import com.namecard.users.dto.entity.QUsers;
+import com.namecard.member.dto.entity.QUsers;
+import com.namecard.member.repository.MemberQuerydslRepository;
 import com.namecard.search.dto.result.SearchUsersResult;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class UsersQuerydslRepositoryImpl implements UsersQuerydslRepository {
+public class MemberQuerydslRepositoryImpl implements MemberQuerydslRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override

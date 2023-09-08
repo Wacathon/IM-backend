@@ -1,9 +1,9 @@
-package com.namecard.config;
+package com.namecard.config.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.namecard.users.dto.entity.Users;
-import com.namecard.users.dto.entity.Role;
+import com.namecard.member.domain.Member;
+import com.namecard.member.domain.Role;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -37,11 +37,11 @@ public class JwtConfig {
     private static final String USER_ROLE = "ROLE_USER";
     private static final String BEARER = "Bearer ";
 
-    public String createAccessToken(Users users) {
+    public String createAccessToken(Member member) {
         return JWT.create()
                 .withSubject(ACCESS_TOKEN_SUBJECT)
                 .withExpiresAt(new Date(System.currentTimeMillis() + accessTokenValidityInSeconds))
-                .withClaim(USERID_CLAIM, users.getUserId())
+                .withClaim(USERID_CLAIM, member.getMemberId())
                 .withClaim(USER_ROLE, Role.USER.name())
                 .sign(Algorithm.HMAC512(secret));
     }

@@ -1,7 +1,7 @@
-package com.namecard.users.dto.entity;
+package com.namecard.member.domain;
 
 import com.namecard.config.AuditBaseEntity;
-import com.namecard.users.dto.request.MyProfileRequest;
+import com.namecard.member.dto.request.MyProfileRequest;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
@@ -13,16 +13,15 @@ import static java.time.LocalDateTime.now;
 
 @Builder
 @Entity
-@Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class Users extends AuditBaseEntity {
+public class Member extends AuditBaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "members_seq")
     @Schema(description = "사용자 고유값(PK)")
-    private long userId;
+    private long memberId;
 
     @Schema(description = "사용자명", example = "테스터")
     private String userName;
