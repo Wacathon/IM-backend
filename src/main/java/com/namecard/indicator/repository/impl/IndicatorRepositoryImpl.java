@@ -1,11 +1,11 @@
 package com.namecard.indicator.repository.impl;
 
-import com.namecard.indicator.dto.entity.QIndicator;
-import com.namecard.indicator.dto.entity.QIndicatorConnect;
+import com.namecard.indicator.domain.QIndicator;
+import com.namecard.indicator.domain.QIndicatorConnect;
 import com.namecard.indicator.dto.result.IndicatorInfoResult.IndicatorScoreResult;
 import com.namecard.indicator.dto.result.MyIndicatorInfoResult;
 import com.namecard.indicator.repository.IndicatorQuerydslRepository;
-import com.namecard.tag.dto.entity.QTag;
+import com.namecard.tag.domain.QTag;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class IndicatorRepositoryImpl implements IndicatorQuerydslRepository {
     private final JPAQueryFactory jpaQueryFactory;
+
     @Override
     public List<IndicatorScoreResult> findIndicatorScoreByMemberId(long userId) {
         QIndicator qindicator = QIndicator.indicator;
@@ -28,10 +29,10 @@ public class IndicatorRepositoryImpl implements IndicatorQuerydslRepository {
                         qindicator.tagScore.avg()))
                 .from(qIndicatorConnect)
                 .innerJoin(qTag)
-                    .on(qIndicatorConnect.tagId.eq(qTag.tagId))
+                .on(qIndicatorConnect.tagId.eq(qTag.tagId))
                 .leftJoin(qindicator)
-                    .on(qIndicatorConnect.tagId.eq(qindicator.tagId)
-                    .and(qIndicatorConnect.memberId.eq(qindicator.memberId)))
+                .on(qIndicatorConnect.tagId.eq(qindicator.tagId)
+                        .and(qIndicatorConnect.memberId.eq(qindicator.memberId)))
                 .where(qIndicatorConnect.memberId.eq(userId))
                 .groupBy(qTag.tagName)
                 .fetch();
@@ -48,10 +49,10 @@ public class IndicatorRepositoryImpl implements IndicatorQuerydslRepository {
                         qIndicator.tagScore.avg()))
                 .from(qIndicatorConnect)
                 .innerJoin(qTag)
-                    .on(qIndicatorConnect.tagId.eq(qTag.tagId))
+                .on(qIndicatorConnect.tagId.eq(qTag.tagId))
                 .leftJoin(qIndicator)
-                    .on(qIndicatorConnect.memberId.eq(qIndicator.memberId)
-                    .and(qTag.tagId.eq(qIndicator.tagId)))
+                .on(qIndicatorConnect.memberId.eq(qIndicator.memberId)
+                        .and(qTag.tagId.eq(qIndicator.tagId)))
                 .where(qIndicatorConnect.memberId.eq(userId))
                 .groupBy(qIndicatorConnect.tagId, qTag.tagName)
                 .fetch();
