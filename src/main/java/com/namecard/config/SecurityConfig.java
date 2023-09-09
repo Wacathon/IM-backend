@@ -51,10 +51,9 @@ public class SecurityConfig {
                 , "/swagger-resources/**"
                 , "/swagger-ui/**"
                 , "/v2/api-docs"
-                , "/api/member/join"
-                , "/api/member/login"
-                , "/api/member/passwdReset"
-                , "/api/auth/refresh"
+                , "/api/member/sign-up"
+                , "/api/member/sign-in"
+                , "/api/auth/renew"
                 , "/api/auth/sendAuth"
                 , "/api/auth/validAuth"
                 , "/api/tag/**"
@@ -99,7 +98,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }
