@@ -44,7 +44,7 @@ public class MemberApiController {
 
     @ApiOperation(value = "비밀번호 변경 [엑세스 토큰 필요]")
     @PutMapping("/password")
-    public ApiResult<Boolean> passwdReset(
+    public ApiResult<Boolean> resetPassword(
             @Valid @RequestBody PasswdResetRequest request,
             @ApiParam(hidden = true) @AuthenticationPrincipal String memberId
     ) {

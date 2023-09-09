@@ -59,8 +59,8 @@ public class IndicatorService {
         IndicatorInfoResult result = IndicatorInfoResult.builder()
                 .email(member.getEmail())
                 .userName(member.getUserName())
-                .phoneNum(member.getPhoneNum())
-                .introduce(member.getIntroduce())
+                .phoneNum(member.getCard().getPhoneNumber())
+                .introduce(member.getCard().getIntroduce())
                 .scoreList(scoreList)
                 .build();
         return result;

@@ -1,6 +1,7 @@
 package com.namecard.member.service;
 
 import com.namecard.exception.UnauthorizedException;
+import com.namecard.member.domain.Card;
 import com.namecard.member.domain.Member;
 import com.namecard.member.dto.request.JoinRequest;
 import com.namecard.member.dto.request.LoginRequest;
@@ -33,26 +34,35 @@ public class MemberService {
         String encodePasswd = passwordEncoder.encode(joinRequest.getPasswd());
         joinRequest.setEncodePasswd(encodePasswd);
 
-        Member member = Member.builder()
-                .email(joinRequest.getEmail())
-                .userName(joinRequest.getName())
-                .phoneNum(joinRequest.getPhoneNum())
-                .passwd(encodePasswd)
+        Card card = Card.builder()
+                .isPublicEmail(true)
+                .isPublicIntroduce(true)
+                .isPublicPhone(true)
+                .cardEmail(null)
+                .phoneNumber(joinRequest.getPhoneNum())
                 .introduce(joinRequest.getIntroduce())
                 .build();
 
+        Member member = Member.builder()
+                .email(joinRequest.getEmail())
+                .userName(joinRequest.getName())
+                .passwd(encodePasswd)
+                .card(card)
+                .build();
+
         memberRepository.save(member);
+
         redisService.delete(joinRequest.getPhoneNum());
     }
 
     private void validateSignUp(JoinRequest joinRequest) {
         List<Member> members = memberRepository.findByEmailOrPhoneNum(joinRequest.getEmail(), joinRequest.getPhoneNum());
-        for (Member memberEntity : members) {
-            if (memberEntity.getEmail().equals(joinRequest.getEmail())) {
+        for (Member member : members) {
+            if (member.getEmail().equals(joinRequest.getEmail())) {
                 throw new IllegalArgumentException("중복된 이메일이 있습니다.");
             }
 
-            if (memberEntity.getPhoneNum().equals(joinRequest.getPhoneNum())) {
+            if (member.getCard().getPhoneNumber().equals(joinRequest.getPhoneNum())) {
                 throw new IllegalArgumentException("중복된 전화번호가 있습니다.");
             }
         }
@@ -79,10 +89,13 @@ public class MemberService {
 
         return MyProfileResult.builder()
                 .memberId(memberId)
-                .email(member.getEmail())
+                .email(member.getCard().getCardEmail())
                 .name(member.getUserName())
-                .phoneNum(member.getPhoneNum())
-                .introduce(member.getIntroduce())
+                .phoneNum(member.getCard().getPhoneNumber())
+                .introduce(member.getCard().getIntroduce())
+                .isPublicEmail(member.getCard().isPublicEmail())
+                .isPublicPhone(member.getCard().isPublicPhone())
+                .isPublicIntroduce(member.getCard().isPublicIntroduce())
                 .build();
     }
 
@@ -97,7 +110,7 @@ public class MemberService {
             throw new IllegalArgumentException("기존 비밀번호가 일치하지 않습니다.");
         }
 
-        if (!passwordEncoder.matches(request.getOriginPasswd(), request.getNewPasswd())) {
+        if (request.getOriginPasswd().equals(request.getNewPasswd())) {
             throw new IllegalArgumentException("동일한 비밀번호입니다.");
         }
 
@@ -112,7 +125,7 @@ public class MemberService {
         Member member = memberRepository.findByMemberId(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("유저 정보가 없습니다."));
 
-        member.updateUsers(profileRequest);
+        member.getCard().updateCard(profileRequest);
     }
 
     public List<SearchUsersResult> getSearchUsers(String userName) {
