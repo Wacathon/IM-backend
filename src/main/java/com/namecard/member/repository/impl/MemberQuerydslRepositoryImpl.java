@@ -1,6 +1,7 @@
 package com.namecard.member.repository.impl;
 
-import com.namecard.member.dto.entity.QUsers;
+import com.namecard.member.domain.QCard;
+import com.namecard.member.domain.QMember;
 import com.namecard.member.repository.MemberQuerydslRepository;
 import com.namecard.search.dto.result.SearchUsersResult;
 import com.querydsl.core.types.Projections;
@@ -17,13 +18,15 @@ public class MemberQuerydslRepositoryImpl implements MemberQuerydslRepository {
 
     @Override
     public List<SearchUsersResult> findLikeUserName(String userName) {
-        QUsers qUsers = QUsers.users;
+        QMember qMember = QMember.member;
+        QCard qCard = QCard.card;
         return jpaQueryFactory.select(Projections.constructor(SearchUsersResult.class,
-                        qUsers.userId,
-                        qUsers.userName,
-                        qUsers.introduce
-                )).from(qUsers)
-                .where(qUsers.userName.contains(userName))
+                        qMember.memberId,
+                        qMember.userName,
+                        qCard.introduce))
+                .from(qMember)
+                .join(qMember.card, qCard)
+                .where(qMember.userName.contains(userName))
                 .fetch();
     }
 }
